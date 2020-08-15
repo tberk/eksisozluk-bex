@@ -5,8 +5,7 @@ export default function attachDomHooks (bridge) {
   // Hide modals
   bridge.on('hide.modal', event => {
     console.log('hide modal triggered')
-    window.jQuery(".dropdown-menu").hide()
-
+    window.jQuery("body").trigger("click")
     bridge.send(event.eventResponseKey)
   })
 

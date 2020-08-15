@@ -15,7 +15,7 @@
 
         </q-card-section>
 
-        <q-card-section class="q-pt-none">
+        <q-card-section class="q-pt-none scroll" style="max-height: 320px">
           <q-chip v-for="(entry, index) in entries" :key="index" clickable @click="openEntry(entry)">#{{ entry }}</q-chip>
 
           <template v-if="entries.length === 0">

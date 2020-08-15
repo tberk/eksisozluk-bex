@@ -13,6 +13,9 @@ export default function attachContentHooks ( bridge ) {
   //
   createMenuItems(bridge)
 
+  //
+  detectChanges(bridge)
+
   // Listen delete requests
   bridge.on('delete.entry', event => {
     const entryId = event.data.id
@@ -32,6 +35,22 @@ export default function attachContentHooks ( bridge ) {
   })
 }
 
+function detectChanges (bridge) {
+  const targetNode = document.getElementById('profile-stats-section-content');
+  const config = { attributes: false, childList: true, subtree: false };
+
+  const callback = function(mutationsList, observer) {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        createMenuItems(bridge)
+      }
+    }
+  };
+
+  const observer = new MutationObserver(callback);
+  observer.observe(targetNode, config);
+}
+
 function createMenuItems (bridge) {
   const uls = document.getElementsByClassName("dropdown-menu right toggles-menu");
 
@@ -42,6 +61,10 @@ function createMenuItems (bridge) {
 
     // No id?
     if (id === null)
+      continue
+
+    // Added before
+    if (ul.innerText.search('silme listesine ekle') !== -1)
       continue
 
     // Create menu item
@@ -55,8 +78,6 @@ function createMenuItems (bridge) {
     li.addEventListener("click", () => {
       addEntryToList(bridge, id)
     });
-
-    console.log('added')
   }
 }
 
@@ -71,6 +92,7 @@ function addEntryToList (bridge, id) {
     if (list.indexOf(id) !== -1) {
       console.log('item exists in the list')
       bridge.send('show.success', { message: 'entry silme sırasında' })
+      bridge.send('hide.modal')
       return
     }
 
