@@ -13,9 +13,6 @@ export default function attachContentHooks ( bridge ) {
   //
   createMenuItems(bridge)
 
-  //
-  detectChanges(bridge)
-
   // Listen delete requests
   bridge.on('delete.entry', event => {
     const entryId = event.data.id
@@ -33,22 +30,28 @@ export default function attachContentHooks ( bridge ) {
       bridge.send(event.eventResponseKey, result)
     });
   })
+
+  //
+  detectChanges(bridge)
 }
 
 function detectChanges (bridge) {
   const targetNode = document.getElementById('profile-stats-section-content');
-  const config = { attributes: false, childList: true, subtree: false };
 
-  const callback = function(mutationsList, observer) {
-    for (let mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        createMenuItems(bridge)
+  if (targetNode) {
+    const config = { attributes: false, childList: true, subtree: false };
+
+    const callback = function(mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          createMenuItems(bridge)
+        }
       }
-    }
-  };
+    };
 
-  const observer = new MutationObserver(callback);
-  observer.observe(targetNode, config);
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+  }
 }
 
 function createMenuItems (bridge) {

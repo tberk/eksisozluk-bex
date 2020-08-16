@@ -1,6 +1,6 @@
 {
   "name": "eksisozluk-bex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "ekşi sözlük entrylerini silebilmek için entry menüsüne alternatif yöntem ekler",
   "productName": "ekşisözlük entry silici",
   "author": "Tuğberk Kılıç <kilictugberk@gmail.com>",

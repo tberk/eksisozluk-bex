@@ -8,7 +8,7 @@
 
         <q-space />
 
-        <div>v1.0.0</div>
+        <div>v1.1.1</div>
       </q-toolbar>
     </q-header>
 
