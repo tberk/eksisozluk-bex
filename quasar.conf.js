@@ -111,8 +111,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `ekşisözlük entry silici`,
-        short_name: `ekşisözlük entry silici`,
+        name: `ekşi sözlük entry silici`,
+        short_name: `ekşi sözlük entry silici`,
         description: `ekşi sözlük entrylerini silebilmek için entry menüsüne alternatif yöntem ekler`,
         display: 'standalone',
         orientation: 'portrait',
