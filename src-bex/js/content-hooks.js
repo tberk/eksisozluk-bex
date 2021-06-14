@@ -163,10 +163,18 @@ function deleteEntry (bridge, id) {
  * 1.2 Delete All
  */
 function createDeleteAllButton (bridge) {
+  console.log('creating delete all button');
   // Own profile?
-  const check = document.getElementsByClassName('add-entry-to-delete-list')
-  if (check.length === 0)
+
+  // const check = document.getElementsByClassName('add-entry-to-delete-list')
+  // v1.2.1 fix
+  const check = document.getElementById('btnmsg')
+
+  if (check) {
+    console.log('**** cant create ***')
     return
+  }
+
 
   // Create button
   const button = document.createElement("button")
@@ -176,11 +184,16 @@ function createDeleteAllButton (bridge) {
 
   // Append button
   const profileSection = document.getElementById('profile-stats-section-content')
-  profileSection.prepend(button)
+  // profileSection.prepend(button)
+
+  // v1.2.1 fix
+  document.getElementById('profile-stats-sections').insertBefore(button, profileSection)
+
+  console.log('delete all created', profileSection, button)
 
   // On click button
   button.addEventListener("click", () => {
-    const r = confirm("tüm entry'lerini silmek istediğine emin misin?");
+    const r = confirm("tüm entry'lerini silmek istediğine emin misin? başka bir deyişle, yolun açık olsun mu paşam?");
     if (r === true) {
       alert("işlem başlıyor... tüm entry'ler listeye eklendi uyarısını alana kadar bu sayfayı kapatmayın.")
       loadAllEntries()

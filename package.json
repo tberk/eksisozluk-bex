@@ -1,6 +1,6 @@
 {
   "name": "eksisozluk-bex",
-  "version": "1.2",
+  "version": "1.2.1",
   "description": "ekşi sözlük entry'lerinin tek tek veya toplu halde silinebilmesini kolaylaştırır.",
   "productName": "ekşi sözlük entry silici",
   "author": "Tuğberk Kılıç <kilictugberk@gmail.com>",
