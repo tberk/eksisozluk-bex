@@ -30,6 +30,7 @@ export async function getManifest() {
       128: './assets/icon-512.png',
     },
     permissions: [
+      // 'https://eksisozluk.com/*',
       'tabs',
       'storage',
       'activeTab',
@@ -47,7 +48,7 @@ export async function getManifest() {
     ],
     web_accessible_resources: [
       {
-        resources: ['dist/contentScripts/style.css'],
+        resources: ['dist/contentScripts/style.css', 'assets/eksiScript.js'],
         matches: ['<all_urls>'],
       },
     ],
