@@ -1,25 +1,45 @@
 /* eslint-disable no-console */
-import { onMessage } from 'webext-bridge/content-script'
+import { onMessage, sendMessage } from 'webext-bridge/content-script'
 import { createApp } from 'vue'
 import App from './views/App.vue'
 import { setupApp } from '~/logic/common-setup'
-import { entries } from '~/logic/entries'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
 (() => {
-  console.info('[vitesse-webext] Hello world from content script')
-
+  // console.info('[vitesse-webext] Hello world from content script')
   // communication example: send previous tab title from background page
+  /*
   onMessage('tab-prev', ({ data }) => {
     console.log(`[vitesse-webext] Navigate from page "${data.title}"`)
   })
+   */
 
-  //
+  // Inject content hooks
   injectEk$i()
 
+  // UI
   window.onload = function () {
     setTimeout(createSubMenuItems, 1000)
   }
+
+  // Listens from background js
+  onMessage('bg-ui-msg', ({ data }) => {
+    showMsg(data?.message)
+  })
+
+  // Listens from eksiScript
+  window.addEventListener('message', (event) => {
+    // We only accept messages from ourselves
+    if (event.source !== window || !event.data.type)
+      return
+
+    // On successfull delete
+    if (event.data.type === 'ENTRY_DELETE_SUCCESS')
+      showMsg(`${event.data.id} nolu entry ba$arıyla silindi`)
+    // On failed delete
+    if (event.data.type === 'ENTRY_DELETE_FAIL')
+      console.warn(`delete fail ${event.data.id}`)
+  }, false)
 
   // mount component to context window
   const container = document.createElement('div')
@@ -47,6 +67,10 @@ function injectEk$i() {
 
 function showMsg(msg: string) {
   window.postMessage({ type: 'FROM_CONTENT_SCRIPT', text: msg }, '*')
+}
+
+function deleteEntry(id: number) {
+  window.postMessage({ type: 'FROM_CONTENT_SCRIPT_DELETE', id }, '*')
 }
 
 function createSubMenuItems() {
@@ -87,18 +111,10 @@ function addEntryToList(id: number) {
   // Hide menu
   document.body.click()
 
-  // Check if the id already exists in the list
-  if (entries.value.includes(id)) {
-    showMsg('entry silme sırasında.')
+  deleteEntry(id)
 
-    return // Exit the function if the id already exists
-  }
-
-  // If the id doesn't exist, push it to the list
-  entries.value.push(id)
-
-  // Success
-  showMsg('silme listesine eklendi.')
+  // Send job to background
+  sendMessage('add-entry', { id })
 }
 
 // Gets entry id from ul menu
