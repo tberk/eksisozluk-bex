@@ -75,6 +75,8 @@ function initEk$iSilici() {
   window.onload = function () {
     setTimeout(createSubMenuItems, 1000)
 
+    createDeleteAllButton()
+
     detectChanges()
   }
 }
@@ -171,4 +173,81 @@ function detectChanges() {
     const observer = new MutationObserver(callback)
     observer.observe(targetNode, config)
   }
+}
+
+/*
+ * Delete all entries
+ */
+function createDeleteAllButton() {
+  // Own profile?
+  const check = document.getElementById('btnmsg')
+  if (check)
+    return
+
+  // Create button
+  const button = document.createElement('button')
+  button.classList.add('primary')
+  button.innerText = 'tüm entry\'leri silme listesine ekle'
+  button.id = 'delete-all-entries'
+
+  // Append button
+  const profileSection = document.getElementById('profile-stats-section-content')
+  document.getElementById('profile-stats-sections')?.insertBefore(button, profileSection)
+
+  // Add listener
+  button.addEventListener('click', () => {
+    const r = confirm('tüm entry\'lerini silmek istediğine emin misin? başka bir deyişle, yolun açık olsun mu paşam?')
+    if (r === true) {
+      alert('işlem başlıyor... tüm entry\'ler listeye eklendi uyarısını alana kadar bu sayfayı kapatmayın.')
+      loadAllEntries()
+    }
+  })
+}
+
+function loadAllEntries() {
+  const btn = document.getElementById('delete-all-entries') as HTMLButtonElement
+
+  if (!btn)
+    return
+
+  btn.disabled = true
+  btn.innerText = 'entry\'ler yükleniyor... lütfen bekleyin...'
+
+  const loadInterval = setInterval(() => {
+    const loadMoreLink = document.getElementsByClassName('load-more-entries')
+    const lastPage = document.getElementById('no-more-data')
+
+    if (!lastPage) {
+      loadMoreLink[0].click()
+    }
+    else {
+      clearInterval(loadInterval)
+      addAllEntriesToList()
+    }
+  }, 500)
+}
+
+function addAllEntriesToList() {
+  const btn = document.getElementById('delete-all-entries') as HTMLButtonElement
+
+  if (!btn)
+    return
+
+  btn.innerText = 'entry\'ler silme listesine ekleniyor... lütfen bekleyin...'
+
+  const elements = document.getElementsByClassName('add-entry-to-delete-list')
+  let i = 0
+
+  const deleteInterval = setInterval(() => {
+    elements[i].click()
+    i++
+
+    if (i >= elements.length) {
+      clearInterval(deleteInterval)
+
+      alert('tüm entry\'ler listeye eklendi. silme işleminin devam etmesi için en az bir eksisozluk.com sayfasının açık olduğuna emin olun.')
+
+      btn.innerText = 'tüm entry\'ler silme listesine eklendi.'
+    }
+  }, 100)
 }
