@@ -1,5 +1,5 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
-import { getList, saveList } from '~/logic/entries'
+import { getList, removeEntry, saveList } from '~/logic/entries'
 
 // only on dev mode
 if (import.meta.hot) {
@@ -11,14 +11,20 @@ if (import.meta.hot) {
 
 browser.runtime.onInstalled.addListener((): void => {
   // eslint-disable-next-line no-console
-  console.log('Extension installed')
+  console.log('ek$i entry silici yüklendi.')
 })
 
+// Periodically check entries to be deleted
 setInterval(async () => {
-  const list = await getList()
-  // eslint-disable-next-line no-console
-  console.log(list)
-}, 5000)
+  checkList()
+}, 15 * 1000)
+
+// Keep last eksisozluk tab id
+let lastTabId: undefined | number
+
+onMessage('set-tab-id', async ({ sender }) => {
+  lastTabId = sender.tabId
+})
 
 onMessage('add-entry', async ({ data, sender }) => {
   if (!data)
@@ -41,8 +47,44 @@ onMessage('add-entry', async ({ data, sender }) => {
   showUIMessage('silme listesine eklendi.', sender.tabId)
 })
 
+onMessage('entry-delete-success', async ({ data }) => {
+  const id = data.id as number
+
+  // Remove from deletion list
+  removeEntry(id)
+
+  // Add to deleted list
+})
+
 function showUIMessage(msg: string, id: number) {
   sendMessage('bg-ui-msg', { message: msg }, { context: 'content-script', tabId: id })
+}
+
+async function checkList() {
+  if (!lastTabId) {
+    // eslint-disable-next-line no-console
+    console.log('no tabs open')
+    return
+  }
+
+  const list = await getList()
+
+  if (list === undefined || list.length === 0) {
+    // eslint-disable-next-line no-console
+    console.log('No need for further action. List is empty.')
+    return
+  }
+
+  const entryId = list[0]
+
+  //
+  if (entryId === null) {
+    // eslint-disable-next-line no-console
+    console.log('id null')
+    return
+  }
+
+  sendMessage('delete-entry', { id: entryId }, { context: 'content-script', tabId: lastTabId })
 }
 
 // communication example: send previous tab title from background page
