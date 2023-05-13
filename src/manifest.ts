@@ -22,7 +22,8 @@ export async function getManifest() {
       default_icon: './assets/icon-512.png',
       default_popup: './dist/popup/index.html',
     },
-    /* options_ui: {
+    /*
+      options_ui: {
       page: './dist/options/index.html',
       open_in_tab: true,
     }, */
@@ -38,9 +39,11 @@ export async function getManifest() {
       // 'tabs',
       // 'activeTab',
       'storage',
+    ],
+    // '*://*/*'
+    host_permissions: [
       ...eksiDomains,
     ],
-    // host_permissions: ['*://*/*'],
     content_scripts: [
       {
         matches: [
