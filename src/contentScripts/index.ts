@@ -14,17 +14,18 @@ import { setupApp } from '~/logic/common-setup'
   })
    */
 
-  // Inject content hooks
-  injectEk$i()
-
-  // UI
-  window.onload = function () {
-    setTimeout(createSubMenuItems, 1000)
-  }
+  // Initialize extension
+  initEk$iSilici()
 
   // Listens from background js
   onMessage('bg-ui-msg', ({ data }) => {
     showMsg(data?.message)
+  })
+
+  onMessage('delete-entry', ({ data }) => {
+    const entryId = data.id as number
+
+    deleteEntry(entryId)
   })
 
   // Listens from eksiScript
@@ -34,11 +35,17 @@ import { setupApp } from '~/logic/common-setup'
       return
 
     // On successfull delete
-    if (event.data.type === 'ENTRY_DELETE_SUCCESS')
-      showMsg(`${event.data.id} nolu entry ba$arıyla silindi`)
+    if (event.data.type === 'ENTRY_DELETE_SUCCESS') {
+      showMsg(`${event.data.id} nolu entry ba$arıyla silindi.`)
+
+      sendMessage('entry-delete-success', { id: event.data.id })
+    }
     // On failed delete
-    if (event.data.type === 'ENTRY_DELETE_FAIL')
+    else if (event.data.type === 'ENTRY_DELETE_FAIL') {
       console.warn(`delete fail ${event.data.id}`)
+
+      sendMessage('entry-delete-fail', { id: event.data.id })
+    }
   }, false)
 
   // mount component to context window
@@ -57,6 +64,21 @@ import { setupApp } from '~/logic/common-setup'
   app.mount(root)
 })()
 
+function initEk$iSilici() {
+  // Inject content hooks
+  injectEk$i()
+
+  // Set tab id
+  sendMessage('set-tab-id', {})
+
+  // UI
+  window.onload = function () {
+    setTimeout(createSubMenuItems, 1000)
+
+    detectChanges()
+  }
+}
+
 function injectEk$i() {
   const th = document.getElementsByTagName('body')[0]
   const s = document.createElement('script')
@@ -66,7 +88,7 @@ function injectEk$i() {
 }
 
 function showMsg(msg: string) {
-  window.postMessage({ type: 'FROM_CONTENT_SCRIPT', text: msg }, '*')
+  window.postMessage({ type: 'FROM_CONTENT_SCRIPT_UI_MESSAGE', text: msg }, '*')
 }
 
 function deleteEntry(id: number) {
@@ -111,8 +133,6 @@ function addEntryToList(id: number) {
   // Hide menu
   document.body.click()
 
-  deleteEntry(id)
-
   // Send job to background
   sendMessage('add-entry', { id })
 }
@@ -133,4 +153,22 @@ function getEntryIdFromUL(ul: HTMLUListElement): number | null {
   }
 
   return null
+}
+
+function detectChanges() {
+  const targetNode = document.getElementById('profile-stats-section-content')
+
+  if (targetNode) {
+    const config = { attributes: false, childList: true, subtree: false }
+
+    const callback = function (mutationsList, observer) {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList')
+          createSubMenuItems()
+      }
+    }
+
+    const observer = new MutationObserver(callback)
+    observer.observe(targetNode, config)
+  }
 }
