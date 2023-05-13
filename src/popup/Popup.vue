@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { entries, saveList } from '~/logic/entries'
+import { useIntervalFn } from '@vueuse/core'
+import { getList, saveList } from '~/logic/entries'
 
-function openOptionsPage() {
-  browser.runtime.openOptionsPage()
+const list: Ref<number[]> = ref([])
+
+onMounted(async () => {
+  syncList()
+
+  // Update list once in while
+  useIntervalFn(() => syncList(), 3 * 1000)
+})
+
+async function syncList() {
+  list.value = await getList()
 }
 
 function clearList() {
   saveList([])
 }
 
-const entryList = computed(() => JSON.parse(entries.value))
+/* function openOptionsPage() {
+  browser.runtime.openOptionsPage()
+} */
 </script>
 
 <template>
@@ -19,14 +31,20 @@ const entryList = computed(() => JSON.parse(entries.value))
       ekşi sözlük entry silici
     </div>
     <div class="mt-1 text-gray-400">
-      {{ entryList.length === 0 ? 'liste boş' : `${entryList.length} entry silme listesinde` }}
+      {{ list.length === 0 ? 'liste boş' : `${list.length} entry silme listesinde` }}
     </div>
 
-    <button v-if="entryList.length > 0" class="btn mt-2" @click="clearList">
-      listeyi temizle
-    </button>
+    <template v-if="list.length > 0">
+      <button class="btn btn-warning mt-2 flex items-center gap-2 mx-auto" @click="clearList">
+        <mdi:delete-sweep-outline /> listeyi temizle
+      </button>
 
-    {{ entryList }}
+      <div class="grid grid-cols-3 max-h-[120px] overflow-y-auto mt-2">
+        <div v-for="e in list" :key="e" class="hover:bg-gray-100 p-1 rounded">
+          <a :href="`https://eksisozluk2023.com/entry/${e}`" target="_blank">#{{ e }}</a>
+        </div>
+      </div>
+    </template>
 
     <!--
     <button class="btn mt-2" @click="openOptionsPage">
