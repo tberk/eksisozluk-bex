@@ -3,6 +3,11 @@ import type { Manifest } from 'webextension-polyfill'
 import type PkgType from '../package.json'
 import { isDev, port, r } from '../scripts/utils'
 
+const eksiDomains = [
+  'https://eksisozluk.com/*',
+  'https://eksisozluk2023.com/*',
+]
+
 export async function getManifest() {
   const pkg = await fs.readJSON(r('package.json')) as typeof PkgType
 
@@ -17,10 +22,10 @@ export async function getManifest() {
       default_icon: './assets/icon-512.png',
       default_popup: './dist/popup/index.html',
     },
-    options_ui: {
+    /* options_ui: {
       page: './dist/options/index.html',
       open_in_tab: true,
-    },
+    }, */
     background: {
       service_worker: './dist/background/index.mjs',
     },
@@ -30,18 +35,17 @@ export async function getManifest() {
       128: './assets/icon-512.png',
     },
     permissions: [
-      // 'https://eksisozluk.com/*',
-      'tabs',
+      // 'tabs',
+      // 'activeTab',
       'storage',
-      'activeTab',
+      ...eksiDomains,
     ],
-    host_permissions: ['*://*/*'],
+    // host_permissions: ['*://*/*'],
     content_scripts: [
       {
         matches: [
           // '<all_urls>',
-          'https://eksisozluk.com/*',
-          'https://eksisozluk2023.com/*',
+          ...eksiDomains,
         ],
         js: [
           'dist/contentScripts/index.global.js',
