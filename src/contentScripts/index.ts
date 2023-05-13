@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
-import { createApp } from 'vue'
-import App from './views/App.vue'
-import { setupApp } from '~/logic/common-setup'
+// import { createApp } from 'vue'
+// import App from './views/App.vue'
+// import { setupApp } from '~/logic/common-setup'
 
 // Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
 (() => {
@@ -49,6 +48,7 @@ import { setupApp } from '~/logic/common-setup'
   }, false)
 
   // mount component to context window
+  /* no need for context window (injects App.vue)
   const container = document.createElement('div')
   container.id = __NAME__
   const root = document.createElement('div')
@@ -62,6 +62,7 @@ import { setupApp } from '~/logic/common-setup'
   const app = createApp(App)
   setupApp(app)
   app.mount(root)
+   */
 })()
 
 function initEk$iSilici() {
@@ -100,7 +101,6 @@ function deleteEntry(id: number) {
 function createSubMenuItems() {
   const uls = document.querySelectorAll('ul.dropdown-menu.right.toggles-menu')
 
-  console.log(uls.length)
   for (let i = 0; i < uls.length; i++) {
     const ul = uls[i] as HTMLUListElement
     const id = getEntryIdFromUL(ul)
