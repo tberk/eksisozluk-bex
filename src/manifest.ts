@@ -39,7 +39,9 @@ export async function getManifest() {
     content_scripts: [
       {
         matches: [
-          '<all_urls>',
+          // '<all_urls>',
+          'https://eksisozluk.com/*',
+          'https://eksisozluk2023.com/*',
         ],
         js: [
           'dist/contentScripts/index.global.js',
