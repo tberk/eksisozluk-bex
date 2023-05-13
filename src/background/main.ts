@@ -1,5 +1,5 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
-import { addDeletedEntry, addEntry, getList, removeEntry } from '~/logic/entries'
+import { addDeletedEntry, addEntry, getList, removeEntry, saveList } from '~/logic/entries'
 
 // only on dev mode
 if (import.meta.hot) {
@@ -15,9 +15,32 @@ browser.runtime.onInstalled.addListener((): void => {
 })
 
 // Periodically check entries to be deleted
+let intervalId: null | NodeJS.Timer = null
+
 setInterval(async () => {
+  const list = await getList()
+
+  if (list.length > 0 && !intervalId)
+    startInterval()
+
+  if (list.length === 0 && intervalId)
+    stopInterval()
+}, 3 * 1000)
+
+function startInterval() {
   checkList()
-}, 30 * 1000)
+
+  intervalId = setInterval(() => {
+    checkList()
+  }, 31 * 1000)
+}
+
+function stopInterval() {
+  if (intervalId !== null) {
+    clearInterval(intervalId)
+    intervalId = null
+  }
+}
 
 // Keep last eksisozluk tab id
 let lastTabId: undefined | number
@@ -51,6 +74,19 @@ onMessage('entry-delete-success', async ({ data }) => {
   addDeletedEntry(id)
 })
 
+onMessage('entry-delete-fail', async ({ data }) => {
+  // const id = data.id as number
+  const list = await getList()
+
+  if (list.length < 2)
+    return
+
+  const first = list.shift() as number
+  list.push(first)
+
+  saveList(list)
+})
+
 function showUIMessage(msg: string, id: number) {
   sendMessage('bg-ui-msg', { message: msg }, { context: 'content-script', tabId: id })
 }
@@ -81,44 +117,3 @@ async function checkList() {
 
   sendMessage('delete-entry', { id: entryId }, { context: 'content-script', tabId: lastTabId })
 }
-
-// communication example: send previous tab title from background page
-// see shim.d.ts for type declaration
-/*
-const previousTabId = 0
-
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  if (!previousTabId) {
-    previousTabId = tabId
-    return
-  }
-
-  let tab: Tabs.Tab
-
-  try {
-    tab = await browser.tabs.get(previousTabId)
-    previousTabId = tabId
-  }
-  catch {
-    return
-  }
-
-  // eslint-disable-next-line no-console
-  console.log('previous tab', tab)
-  sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId })
-})
-
-onMessage('get-current-tab', async () => {
-  try {
-    const tab = await browser.tabs.get(previousTabId)
-    return {
-      title: tab?.title,
-    }
-  }
-  catch {
-    return {
-      title: undefined,
-    }
-  }
-})
-*/
