@@ -1,5 +1,5 @@
 import { onMessage, sendMessage } from 'webext-bridge/background'
-import { getList, removeEntry, saveList } from '~/logic/entries'
+import { addDeletedEntry, addEntry, getList, removeEntry } from '~/logic/entries'
 
 // only on dev mode
 if (import.meta.hot) {
@@ -17,7 +17,7 @@ browser.runtime.onInstalled.addListener((): void => {
 // Periodically check entries to be deleted
 setInterval(async () => {
   checkList()
-}, 15 * 1000)
+}, 30 * 1000)
 
 // Keep last eksisozluk tab id
 let lastTabId: undefined | number
@@ -27,23 +27,17 @@ onMessage('set-tab-id', async ({ sender }) => {
 })
 
 onMessage('add-entry', async ({ data, sender }) => {
-  if (!data)
-    return
-
-  const id = data.id as number
+  const id = data?.id as number
   const list = await getList()
 
   // Check
   if (list.includes(id)) {
     showUIMessage('entry silme sırasında.', sender.tabId)
-
     return
   }
 
-  // Add & save
-  list.push(id)
-  saveList(list)
-
+  // Add to list
+  addEntry(id)
   showUIMessage('silme listesine eklendi.', sender.tabId)
 })
 
@@ -54,6 +48,7 @@ onMessage('entry-delete-success', async ({ data }) => {
   removeEntry(id)
 
   // Add to deleted list
+  addDeletedEntry(id)
 })
 
 function showUIMessage(msg: string, id: number) {
