@@ -10,20 +10,18 @@ window.addEventListener('message', (event) => {
 
   // Makes delete calls
   if (event.data.type === 'FROM_CONTENT_SCRIPT_DELETE') {
-    // Log
+    const id = event.data.id
+
     // eslint-disable-next-line no-console
-    console.log(`Making a delete call to: ${event.data.id}`)
+    console.log(`Making a delete call to: ${id}`)
 
-    window.postMessage({ type: 'ENTRY_DELETE_SUCCESS', id: event.data.id }, '*')
-
-    // Delete
     // eslint-disable-next-line no-undef
-    $.post('/entry/sil', { id: event.data.id })
+    $.post('/entry/sil', { id })
       .done(() => {
-        window.postMessage({ type: 'ENTRY_DELETE_SUCCESS', id: event.data.id }, '*')
+        window.postMessage({ type: 'ENTRY_DELETE_SUCCESS', id }, '*')
       })
       .fail(() => {
-        window.postMessage({ type: 'ENTRY_DELETE_FAIL', id: event.data.id }, '*')
+        window.postMessage({ type: 'ENTRY_DELETE_FAIL', id }, '*')
       })
   }
 }, false)
