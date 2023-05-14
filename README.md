@@ -6,8 +6,6 @@ Bu projenin amacı, Ekşi Sözlük kullanıcılarının entry'lerini tek tek vey
 
 Chrome kullanıcıları için eklentinin yüklenebileceği adres: [Chrome Web Mağazası](https://chrome.google.com/webstore/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi)
 
-Firefox için eklenti linki daha sonra eklenecektir.
-
 ## Nasıl Kullanılır
 
 ### Tek Tek Silme
@@ -32,9 +30,6 @@ Bu proje, [WebExtension Vite Starter](https://github.com/antfu/vitesse-webext) t
 
 ## English Summary
 
-This project, called "Ekşi Sözlük Entry Silici" (Ekşi Sözlük Entry Deleter), is designed to help users of Ekşi Sözlük (a popular Turkish social platform similar to Reddit) to delete their entries individually or in bulk easily. It has been developed using the WebExtension Vite Starter template. The extension queues the entries you want to delete and automatically deletes one entry every 30 seconds, as the Ekşi Sözlük administration only allows one entry to be deleted every 30 seconds. Also, it supports queuing up all entries of the user to be deleted.
+This project, called "Ekşi Sözlük Entry Silici" (Ekşi Sözlük Entry Deleter), is designed to help users of Ekşi Sözlük (a popular Turkish social platform similar to Reddit) to delete their entries individually or in bulk easily. It has been developed using the WebExtension Vite Starter template. The extension queues the entries you want to delete and automatically deletes one entry every 30 seconds, as the Ekşi Sözlük administration only allows one entry to be deleted every 30 seconds.
 
-The extension can be installed from the [Chrome Web Store](https://chrome.google.com/webstore/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi). The link for the Firefox version will be added later.
-
-
-
+The extension can be installed from the [Chrome Web Store](https://chrome.google.com/webstore/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi). 
