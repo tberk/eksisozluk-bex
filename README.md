@@ -4,7 +4,7 @@ Bu projenin amacı, Ekşi Sözlük kullanıcılarının entry'lerini tek tek vey
 
 ## Kurulum
 
-Chrome kullanıcıları için eklentinin yüklenebileceği adres: [Chrome Web Mağazası](https://chrome.google.com/webstore/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi)
+Chrome ve Edge kullanıcıları için eklentinin yüklenebileceği adres: [Chrome Web Mağazası](https://chrome.google.com/webstore/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi)
 
 ## Nasıl Kullanılır
 
