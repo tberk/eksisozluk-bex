@@ -4,9 +4,10 @@ import type PkgType from '../package.json'
 import { isDev, port, r } from '../scripts/utils'
 
 const eksiDomains = [
-  'https://eksisozluk.com/*',
-  'https://eksisozluk2023.com/*',
-  'https://eksisozluk42.com/*',
+  'https://*.eksisozluk.com/*',
+  'https://*.eksisozluk2023.com/*',
+  'https://*.eksisozluk42.com/*',
+  'https://*.eksisozluk1923.com/*',
 ]
 
 export async function getManifest() {
