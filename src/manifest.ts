@@ -8,6 +8,7 @@ const eksiDomains = [
   'https://*.eksisozluk2023.com/*',
   'https://*.eksisozluk42.com/*',
   'https://*.eksisozluk1923.com/*',
+  'https://*.eksisozluk111.com/*',
 ]
 
 export async function getManifest() {
