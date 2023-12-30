@@ -1,7 +1,7 @@
 {
   "name": "eksisozluk-bex",
   "displayName": "ekşi sözlük entry silici",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "private": true,
   "packageManager": "pnpm@8.3.1",
   "description": "ekşi sözlük entry'lerinin tek tek veya toplu halde silinebilmesini kolaylaştırır.",
