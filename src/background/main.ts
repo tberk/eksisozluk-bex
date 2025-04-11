@@ -9,6 +9,17 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
+// remove or turn this off if you don't use side panel
+const USE_SIDE_PANEL = false /* NOTE: DISABLED, also in manifest */
+
+// to toggle the sidepanel with the action button in chromium:
+if (USE_SIDE_PANEL) {
+  // @ts-expect-error missing types
+  browser.sidePanel
+    .setPanelBehavior({ openPanelOnActionClick: true })
+    .catch((error: unknown) => console.error(error))
+}
+
 browser.runtime.onInstalled.addListener((): void => {
   // eslint-disable-next-line no-console
   console.log('ek$i entry silici yüklendi.')
@@ -37,7 +48,7 @@ function startInterval() {
 
 function stopInterval() {
   if (intervalId !== null) {
-    clearInterval(intervalId)
+    clearInterval(intervalId as any)
     intervalId = null
   }
 }
@@ -50,7 +61,7 @@ onMessage('set-tab-id', async ({ sender }) => {
 })
 
 onMessage('add-entry', async ({ data, sender }) => {
-  const id = data?.id as number
+  const id = (data as any)?.id as number
   const list = await getList()
 
   // Check
@@ -65,7 +76,7 @@ onMessage('add-entry', async ({ data, sender }) => {
 })
 
 onMessage('entry-delete-success', async ({ data }) => {
-  const id = data.id as number
+  const id = (data as any).id as number
 
   // Remove from deletion list
   removeEntry(id)
@@ -74,7 +85,7 @@ onMessage('entry-delete-success', async ({ data }) => {
   addDeletedEntry(id)
 })
 
-onMessage('entry-delete-fail', async ({ data }) => {
+onMessage('entry-delete-fail', async () => { /* { data } */
   // const id = data.id as number
   const list = await getList()
 
