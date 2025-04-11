@@ -88,6 +88,9 @@ export default defineConfig(({ command }) => ({
       host: 'localhost',
     },
     origin: `http://localhost:${port}`,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
   build: {
     watch: isDev
