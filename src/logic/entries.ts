@@ -1,10 +1,10 @@
 import { storage } from 'webextension-polyfill'
-import { useStorageLocal } from '~/composables/useStorageLocal'
+import { useWebExtensionStorage } from '~/composables/useWebExtensionStorage'
 
 const arr: number[] = []
 
 // array for entries to be deleted
-export const entries = useStorageLocal('entries', JSON.stringify(arr))
+export const entries = useWebExtensionStorage('entries', JSON.stringify(arr))
 
 export const getList = async (): Promise<number[]> => {
   const list = (await storage.local.get('entries')).entries
@@ -36,7 +36,7 @@ export const addEntry = async (id: number) => {
 }
 
 // array for entries that are deleted
-export const deletedEntries = useStorageLocal('deletedEntries', JSON.stringify(arr))
+export const deletedEntries = useWebExtensionStorage('deletedEntries', JSON.stringify(arr))
 
 export const getDeletedEntries = async (): Promise<number[]> => {
   const list = (await storage.local.get('deletedEntries')).deletedEntries

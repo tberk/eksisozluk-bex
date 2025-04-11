@@ -32,12 +32,12 @@ export async function getManifest() {
     }, */
     background: isFirefox
       ? {
-        scripts: ['dist/background/index.mjs'],
-        type: 'module',
-      }
+          scripts: ['dist/background/index.mjs'],
+          type: 'module',
+        }
       : {
-        service_worker: './dist/background/index.mjs',
-      },
+          service_worker: './dist/background/index.mjs',
+        },
     icons: {
       16: './assets/icon-512.png',
       48: './assets/icon-512.png',
@@ -76,6 +76,21 @@ export async function getManifest() {
         : 'script-src \'self\'; object-src \'self\'',
     },
   }
+
+  // add sidepanel
+  /* NOTE: DISABLED
+  if (isFirefox) {
+    manifest.sidebar_action = {
+      default_panel: 'dist/sidepanel/index.html',
+    }
+  }
+  else {
+    // the sidebar_action does not work for chromium based
+     (manifest as any).side_panel = {
+      default_path: 'dist/sidepanel/index.html',
+    }
+  }
+     */
 
   // FIXME: not work in MV3
   if (isDev && false) {
