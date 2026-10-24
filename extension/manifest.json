@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "ekşi sözlük entry silici",
+  "version": "3.0.0",
+  "description": "ekşi sözlük entry'lerinin tek tek veya toplu halde silinebilmesini kolaylaştırır.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "permissions": ["storage", "alarms", "scripting"],
+  "host_permissions": [
+    "https://*.eksisozluk.com/*",
+    "https://*.eksisozluk2023.com/*",
+    "https://*.eksisozluk42.com/*",
+    "https://*.eksisozluk1923.com/*",
+    "https://*.eksisozluk111.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.eksisozluk.com/*",
+        "https://*.eksisozluk2023.com/*",
+        "https://*.eksisozluk42.com/*",
+        "https://*.eksisozluk1923.com/*",
+        "https://*.eksisozluk111.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "eksi-entry-silici@tberk",
+      "strict_min_version": "128.0"
+    }
+  }
+}
