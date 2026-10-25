@@ -29,6 +29,7 @@ Chrome ve Edge kullanıcıları için eklentinin yüklenebileceği adres: [Chrom
 - Sözlük tekrar açıldığında liste kaldığı yerden otomatik olarak devam eder.
 - Tarayıcı eklentileri kısmından uygulamaya tıklayarak entry'lerin durumuna bakabilirsiniz.
 - Sözlük üzerinden ayarlar -> tercihler "sildiğim entry'leri çöpe atmadan komple sil" seçeğini işaretlemek düşünülebilir. Şart değil, daha sonra çöpü komple boşaltabilirsiniz tek seferde.
+- Eklenti hiçbir veri toplamaz; ayrıntılar için [gizlilik politikası](PRIVACY.md).
 
 ## Geliştirme
 
