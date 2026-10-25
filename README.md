@@ -28,7 +28,7 @@ Chrome ve Edge kullanıcıları için eklentinin yüklenebileceği adres: [Chrom
 
 Build adımı ya da bağımlılık yok; eklenti `extension/` klasöründeki düz JavaScript dosyalarından oluşur.
 
-- `manifest.json`: izinler ve ekşi sözlük alan adları. Yeni bir alan adı eklemek için `host_permissions` ve `content_scripts.matches` listelerini güncelleyin.
+- `manifest.json`: izinler ve ekşi sözlük alan adları. Yeni bir alan adı eklemek için `host_permissions` ve `content_scripts.matches` listelerine ekleyin (şu an yalnızca eksisozluk.com).
 - `background.js`: silme kuyruğu. 31 saniyede bir açık bir ekşi sözlük sekmesinde sıradaki entry'yi siler, 3 kez silinemeyen entry'leri "silinemeyenler" listesine taşır.
 - `content.js`: entry menüsüne "silme listesine ekle" seçeneğini ve profile "tüm entry'leri silme listesine ekle" butonunu ekler.
 - `popup.html` / `popup.js`: kuyruk, duraklat/devam et, silinemeyenler ve silinenler.

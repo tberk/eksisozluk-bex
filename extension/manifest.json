@@ -21,20 +21,12 @@
   },
   "permissions": ["storage", "alarms", "scripting"],
   "host_permissions": [
-    "https://*.eksisozluk.com/*",
-    "https://*.eksisozluk2023.com/*",
-    "https://*.eksisozluk42.com/*",
-    "https://*.eksisozluk1923.com/*",
-    "https://*.eksisozluk111.com/*"
+    "https://*.eksisozluk.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://*.eksisozluk.com/*",
-        "https://*.eksisozluk2023.com/*",
-        "https://*.eksisozluk42.com/*",
-        "https://*.eksisozluk1923.com/*",
-        "https://*.eksisozluk111.com/*"
+        "https://*.eksisozluk.com/*"
       ],
       "js": ["content.js"]
     }
