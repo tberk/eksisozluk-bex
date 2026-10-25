@@ -2,7 +2,7 @@
 // alarm. Service workers are stopped when idle: all state lives in storage.
 
 const ALARM = 'delete-next'
-const PERIOD_MINUTES = 31 / 60
+const PERIOD_MS = 31 * 1000
 const MAX_ATTEMPTS = 3
 const EKSI_URLS = chrome.runtime.getManifest().host_permissions
 
@@ -14,6 +14,7 @@ const DEFAULT_STATE = {
   paused: false,
   waitingForTab: false, // true when the last run found no usable ekşi tab
   origin: 'https://eksisozluk.com', // origin of the last tab used, for popup links
+  lastAttemptAt: 0, // when a delete request was last sent, to respect the rate limit
 }
 
 async function getState() {
@@ -38,10 +39,15 @@ async function syncAlarm(state) {
   const active = state.queue.length > 0 && !state.paused
   const alarm = await chrome.alarms.get(ALARM)
 
-  if (active && !alarm)
-    await chrome.alarms.create(ALARM, { delayInMinutes: 0.5, periodInMinutes: PERIOD_MINUTES })
-  else if (!active && alarm)
+  if (active && !alarm) {
+    const minutes = PERIOD_MS / 60_000
+    await chrome.alarms.create(ALARM, { delayInMinutes: minutes, periodInMinutes: minutes })
+    // Starting (or resuming): try right away instead of waiting for the first alarm
+    setTimeout(deleteNext, 0)
+  }
+  else if (!active && alarm) {
     await chrome.alarms.clear(ALARM)
+  }
 }
 
 // Runs in the page (MAIN world) so the site's own jQuery sends the session and CSRF token
@@ -83,7 +89,8 @@ async function deleteNext() {
   try {
     const state = await getState()
     const id = state.queue[0]
-    if (state.paused || id === undefined)
+    // The rate limit check also stops an immediate try right after a recent deletion
+    if (state.paused || id === undefined || Date.now() - state.lastAttemptAt < PERIOD_MS)
       return
 
     for (const tab of await findTabs()) {
@@ -125,6 +132,7 @@ async function deleteNext() {
 function recordResult(state, id, ok, origin) {
   state.waitingForTab = false
   state.origin = origin
+  state.lastAttemptAt = Date.now()
   state.queue = state.queue.filter(e => e !== id)
 
   if (ok) {
