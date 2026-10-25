@@ -46,8 +46,6 @@ Build adımı ya da bağımlılık yok; eklenti `extension/` klasöründeki düz
 2. "Paketlenmemiş öğe yükle" ile `extension/` klasörünü seçin.
 3. Değişiklikten sonra eklenti kartındaki yenile butonuna basın ve ekşi sözlük sekmesini yenileyin.
 
-Firefox için `about:debugging` → "Geçici eklenti yükle" ile `extension/manifest.json` seçilebilir (Firefox 128+).
-
 ### Yayınlama
 
 `manifest.json` içindeki `version` değerini artırın ve zip'leyin:

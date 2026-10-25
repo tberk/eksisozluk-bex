@@ -16,8 +16,7 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js",
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "permissions": ["storage", "alarms", "scripting"],
   "host_permissions": [
@@ -30,11 +29,5 @@
       ],
       "js": ["content.js"]
     }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "eksi-entry-silici@tberk",
-      "strict_min_version": "128.0"
-    }
-  }
+  ]
 }
