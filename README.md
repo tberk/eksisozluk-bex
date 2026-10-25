@@ -1,5 +1,11 @@
 # Ekşi Sözlük Entry Silici
 
+<p>
+  <a href="https://chromewebstore.google.com/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi"><img alt="Chrome Web Store version" src="https://img.shields.io/chrome-web-store/v/mmomeigkfemlkoibogenkdijibpdjnpi?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white"></a>
+  <a href="https://chromewebstore.google.com/detail/ek%C5%9Fis%C3%B6zl%C3%BCk-entry-silici/mmomeigkfemlkoibogenkdijibpdjnpi"><img alt="Chrome Web Store susers" src="https://img.shields.io/chrome-web-store/users/mmomeigkfemlkoibogenkdijibpdjnpi?label=susers"></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
+</p>
+
 Bu projenin amacı, Ekşi Sözlük kullanıcılarının entry'lerini tek tek veya toplu halde kolayca silebilmelerine yardımcı olmaktır. Ekşi Sözlük yönetimi, 30 saniyede bir entry'nin silinmesine izin verirken, bu eklenti, silmek istediğiniz entry'leri sıraya alır ve 30 saniyede bir otomatik olarak siler.
 
 ## Kurulum
