@@ -6,6 +6,8 @@
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
+![ekşi sözlük entry silici: tüm entry'lerini tek tıkla sıraya al, eklenti senin yerine silsin.](store/assets/cover-A.jpg)
+
 Bu projenin amacı, Ekşi Sözlük kullanıcılarının entry'lerini tek tek veya toplu halde kolayca silebilmelerine yardımcı olmaktır. Ekşi Sözlük yönetimi, 30 saniyede bir entry'nin silinmesine izin verirken, bu eklenti, silmek istediğiniz entry'leri sıraya alır ve 30 saniyede bir otomatik olarak siler.
 
 ## Kurulum
