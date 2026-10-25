@@ -2,7 +2,8 @@
 // alarm. Service workers are stopped when idle: all state lives in storage.
 
 const ALARM = 'delete-next'
-const PERIOD_MS = 31 * 1000
+const RATE_LIMIT_MS = 30 * 1000
+const PERIOD_MS = 31 * 1000 // a little slack over the rate limit
 const MAX_ATTEMPTS = 3
 const EKSI_URLS = chrome.runtime.getManifest().host_permissions
 
@@ -90,11 +91,12 @@ async function deleteNext() {
     const state = await getState()
     const id = state.queue[0]
     // The rate limit check also stops an immediate try right after a recent deletion
-    if (state.paused || id === undefined || Date.now() - state.lastAttemptAt < PERIOD_MS)
+    if (state.paused || id === undefined || Date.now() - state.lastAttemptAt < RATE_LIMIT_MS)
       return
 
     for (const tab of await findTabs()) {
       let result
+      const sentAt = Date.now()
       try {
         const [injection] = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
@@ -113,7 +115,7 @@ async function deleteNext() {
         continue
 
       const origin = new URL(tab.url).origin
-      const outcome = await update(s => recordResult(s, id, result.ok, origin))
+      const outcome = await update(s => recordResult(s, id, result.ok, origin, sentAt))
       toast(tab.id, {
         deleted: `#${id} nolu entry başarıyla silindi.`,
         retry: `#${id} nolu entry silinemedi, daha sonra tekrar denenecek.`,
@@ -129,10 +131,10 @@ async function deleteNext() {
   }
 }
 
-function recordResult(state, id, ok, origin) {
+function recordResult(state, id, ok, origin, sentAt) {
   state.waitingForTab = false
   state.origin = origin
-  state.lastAttemptAt = Date.now()
+  state.lastAttemptAt = sentAt
   state.queue = state.queue.filter(e => e !== id)
 
   if (ok) {
